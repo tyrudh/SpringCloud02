@@ -13,10 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 public class ThreeTimeLoadBalancer implements ReactorServiceInstanceLoadBalancer {
-
-
     private final String serviceId;
-
     private int instance_call_count = 0;//已经被调用的次数
     private int instance_index = 0;//当前提供服务的实例
     private ObjectProvider<ServiceInstanceListSupplier> serviceInstanceListSupplierProvider;
@@ -24,24 +21,19 @@ public class ThreeTimeLoadBalancer implements ReactorServiceInstanceLoadBalancer
         this.serviceId = serviceId;
         this.serviceInstanceListSupplierProvider = serviceInstanceListSupplierProvider;
     }
-
     @Override
     public Mono<Response<ServiceInstance>> choose(Request request) {
-
         ServiceInstanceListSupplier supplier = this.serviceInstanceListSupplierProvider.getIfAvailable();
-
         return supplier.get().next().map(this::getInstanceResponse);
     }
-
     public Response<ServiceInstance> getInstanceResponse(List<ServiceInstance> instanceList){
         if (instanceList.isEmpty()){
             return new EmptyResponse();
         }
-
         int size = instanceList.size();
         ServiceInstance serviceInstance = null;
         while (serviceInstance == null){
-            if (this.instance_call_count < 3){
+            if (this.instance_call_count < 4){
                 serviceInstance = instanceList.get(this.instance_index);
                 this.instance_call_count++;
             }

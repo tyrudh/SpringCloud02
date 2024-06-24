@@ -12,6 +12,7 @@ import ynu.edu.rule.CustomerLoadBalanceConfig;
 @SpringBootApplication
 
 @LoadBalancerClient(name = "provide-serve",configuration = CustomThreeTimeLoadBalancerConfig.class)
+//@LoadBalancerClient(name = "provide-serve")
 public class ConsumerApplication {
 
     /**

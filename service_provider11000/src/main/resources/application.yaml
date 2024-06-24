@@ -5,6 +5,14 @@ spring:
     name: "provide-serve"
     admin:
       enabled: false
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false # 如果使用Spring Cloud LoadBalancer，默认Ribbon是禁用的，此行可省略
+      loadbalancer:
+        strategy:
+          # 配置为随机策略
+          type: RANDOM
 eureka:
   instance:
     prefer-ip-address: true
